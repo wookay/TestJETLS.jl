@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["WooKyoung Noh <wookay.noh@gmail.com>"]
 
 [sources]
-JETLS = {url = "https://github.com/aviatesk/JETLS.jl", rev = "master"}
+JETLS = {path = "sources/JETLS"}
 
 [compat]
 julia = "1.12.2"
