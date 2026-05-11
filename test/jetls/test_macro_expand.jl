@@ -2,6 +2,7 @@
 module test_jetls_test_macro_expand
 
 using Test
+using Jive
 using JETLS: JS
 using TestJETLS.Utils: test_macro_expand
 
