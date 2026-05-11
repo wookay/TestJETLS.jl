@@ -6,12 +6,12 @@ authors = ["WooKyoung Noh <wookay.noh@gmail.com>"]
 [sources]
 JETLS = {path = "sources/JETLS"}
 
-[compat]
-julia = "1.12.2"
-
 [deps]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 JETLS = "a3b70258-0602-4ee2-b5a6-54c2470400db"
+
+[compat]
+julia = "1.12.2"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
