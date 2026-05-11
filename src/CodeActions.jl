@@ -9,7 +9,9 @@ end
 
 function get_lowering_diagnostics(
         text::AbstractString, code::Union{AbstractString,Nothing} = nothing;
-        mod::Module = lowering_module, kwargs...
+        context_module::Module = lowering_module,
+        world::UInt = Base.get_world_counter(),
+        kwargs...
     )
     filename = abspath(pkgdir(JETLS), "test", "test_code_action.jl")
     fi = JETLS.FileInfo(#=version=#0, text, filename)
@@ -17,7 +19,9 @@ function get_lowering_diagnostics(
     st0_top = JETLS.build_syntax_tree(fi)
     diagnostics = LSP.Diagnostic[]
     JETLS.iterate_toplevel_tree(st0_top) do st0::JS.SyntaxTree
-        JETLS.lowering_diagnostics!(diagnostics, uri, fi, mod, st0; kwargs...)
+        JETLS.lowering_diagnostics!(diagnostics, uri, fi,
+            st0, context_module, world, #=analyzer=#nothing, JETLS.LSPostProcessor();
+            kwargs...)
     end
     if code !== nothing
         filter!(d -> d.code == code, diagnostics)
