@@ -35,11 +35,8 @@ jobs:
         julia -e 'using Pkg; Pkg.develop(path = "JETLS")'
         cd ../
     - uses: julia-actions/julia-buildpkg@v1
-  # - uses: julia-actions/julia-runtest@v1
-    - name: runtests
-      run: |
-        julia --project=. -e 'using Pkg; Pkg.test(; coverage=false, julia_args=["--check-bounds=yes", "--compiled-modules=yes", "--depwarn=yes"], force_latest_compatible_version=false, allow_reresolve=true)'
     - name: JETLS check
       run: |
         julia -e 'using Pkg; Pkg.add("Jive")'
         julia --startup-file=no --project=. -m JETLS check test/
+    - uses: julia-actions/julia-runtest@v1
