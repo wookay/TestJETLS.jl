@@ -46,14 +46,14 @@ end # for
 
 for f in [:(function get_cursor_bindings(
                 fi::JETLS.FileInfo, b::Int;
-                mod::Module = lowering_module,
+                context_module::Module = lowering_module,
                 soft_scope::Bool = false
                 ) end),
           :(function get_cursor_bindings(marked_text::AbstractString; kwargs...) end),
           :(function get_local_completions(s::AbstractString, b::Int) end),
-          :(function with_completion(f, text::String; kwargs...) end),
           :(function cv_has(cs::Vector{CompletionItem}, expected; kind=nothing) end),
           :(function cv_nhas(cs::Vector{CompletionItem}, unexpected) end),
+          :(function with_completion(f, text::String; kwargs...) end),
           :(function test_single_cv(
                 code::String, expected::Vector{String};
                 unexpected::Vector{String} = String[], kind = nothing,
@@ -73,7 +73,7 @@ check_the_code_block_diff(
 )
 
 for ex in [:(macro expect_jl_err(ex) end),
-           :(function jldebug(mod::Module, st0_in::JS.SyntaxTree, stop::Int=5) end),
+           :(function jldebug(context_module::Module, st0_in::JS.SyntaxTree, stop::Int=5) end),
            :(function jlnode(g::JL.SyntaxGraph, i::JS.NodeId) end)]
     check_the_code_block_diff(
         "sources/JETLS/test/jsjl-utils.jl", ex,
@@ -81,8 +81,8 @@ for ex in [:(macro expect_jl_err(ex) end),
     )
 end # for
 
-for f in [:(function jlexpand(mod::Module, code::AbstractString) end),
-          :(function jlresolve(mod::Module, code::AbstractString) end)]
+for f in [:(function jlexpand(context_module::Module, code::AbstractString) end),
+          :(function jlresolve(context_module::Module, code::AbstractString) end)]
     check_the_code_block_diff(
         "sources/JETLS/test/utils/test_jl_syntax_macros.jl", f,
         "src/Utils.jl", :(module Utils $f end)

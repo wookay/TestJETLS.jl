@@ -11,13 +11,14 @@ end
 
 function get_cursor_bindings(
         fi::JETLS.FileInfo, b::Int;
-        mod::Module = lowering_module,
+        context_module::Module = lowering_module,
         soft_scope::Bool = false
     )
     st0 = JETLS.build_syntax_tree(fi)
-    cb = JETLS.cursor_bindings(st0, b, mod; soft_scope)
+    cb = JETLS.cursor_bindings(st0, b, context_module; soft_scope)
     return isnothing(cb) ? [] : cb
 end
+
 function get_cursor_bindings(marked_text::AbstractString; kwargs...)
     text, positions = JETLS.get_text_and_positions(marked_text)
     fi = JETLS.FileInfo(#=version=#0, text, @__FILE__)
@@ -30,14 +31,6 @@ function get_local_completions(s::AbstractString, b::Int)
     fi = JETLS.FileInfo(#=version=#0, s, @__FILE__)
     return map(get_cursor_bindings(fi, b)) do ((bi, st, dist))
         JETLS.to_completion(bi, st, dist, uri, fi)
-    end
-end
-
-function with_completion(f, text::String; kwargs...)
-    clean_code, positions = JETLS.get_text_and_positions(text; kwargs...)
-    for (i, pos) in enumerate(positions)
-        cv = get_local_completions(clean_code, JETLS.xy_to_offset(clean_code, pos, @__FILE__))
-        f(i, cv)
     end
 end
 
@@ -70,6 +63,14 @@ function cv_nhas(cs::Vector{CompletionItem}, unexpected)
     cnames = Set(map(cs -> cs.label, cs))
     for ne in unexpected
         @test !(String(ne) in cnames)
+    end
+end
+
+function with_completion(f, text::String; kwargs...)
+    clean_code, positions = JETLS.get_text_and_positions(text; kwargs...)
+    for (i, pos) in enumerate(positions)
+        cv = get_local_completions(clean_code, JETLS.xy_to_offset(clean_code, pos, @__FILE__))
+        f(i, cv)
     end
 end
 
