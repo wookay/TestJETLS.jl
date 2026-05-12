@@ -7,29 +7,17 @@ using JETLS: JETLS
 using .JETLS: JS
 using .JETLS: TypeAnnotation as TA
 
-# Run the full pipeline a typical caller would: parse → lower → infer, then
-# wrap the thunk's inferred tree (and `st3`, used to identify user-written
-# return values) in an `InferredTreeContext` ready for byte-range queries.
-# Returns `(fi, ctx)` so the test can also access `fi` for `xy_to_offset` etc.
-function type_annotate(code::AbstractString, mod::Module = Main; expect_degrade::Bool=false)
+# Run the full TypeAnnotation pipeline through its exported driver and return
+# `(fi, ctx)` for the toplevel containing byte 1 — i.e. the *first* top-level
+# statement in `code`. The tests below either pass single-toplevel snippets
+# (the common case) or place the statement under test first. `fi` is returned
+# so tests can use `xy_to_offset` etc. against the source.
+function type_annotate(code::AbstractString, mod::Module = Main)
     fi = JETLS.FileInfo(1, code, @__FILE__)
     st0_top = JETLS.build_syntax_tree(fi)
-    st3_ref = Ref{JETLS.SyntaxTreeC}()
-    inferred = Ref{JETLS.SyntaxTreeC}()
-    JETLS.iterate_toplevel_tree(st0_top) do st0::JS.SyntaxTree
-        result = @something TA.get_inferrable_tree(st0, mod) return nothing
-        (; ctx3, st3) = result
-        st3_ref[] = st3
-        inferred[] = TA.infer_toplevel_tree(ctx3, st3, mod)
-        return nothing
-    end
-    if expect_degrade
-        @test !isassigned(inferred)
-        return nothing
-    else
-        @test isassigned(inferred)
-    end
-    return fi, TA.InferredTreeContext(inferred[], st3_ref[])
+    ctx = build_inferred_context_at(st0_top, mod, 1:1)
+    @test ctx !== nothing
+    return fi, ctx
 end
 
 # Byte range of the literal substring `s` inside `code`, in `JS.byte_range`

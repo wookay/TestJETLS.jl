@@ -27,6 +27,7 @@ jobs:
       with:
         version: ${{ matrix.julia-version }}
     - uses: julia-actions/cache@v1
+
     - name: sources
       run: |
         mkdir -p sources/
@@ -34,9 +35,19 @@ jobs:
         git clone --depth=1 https://github.com/aviatesk/JETLS.jl JETLS
         julia -e 'using Pkg; Pkg.develop(path = "JETLS")'
         cd ../
+
     - uses: julia-actions/julia-buildpkg@v1
+
     - name: JETLS check
       run: |
         julia -e 'using Pkg; Pkg.add("Jive")'
         julia --startup-file=no --project=. -m JETLS check test/
+
     - uses: julia-actions/julia-runtest@v1
+
+    - name: gen/check_for_updates_using_sugar_cubes.jl
+      run: |
+        julia -e 'using Pkg; Pkg.develop(url="https://github.com/wookay/SugarCubes.jl")'
+        cd gen/
+        julia --color=yes check_for_updates_using_sugar_cubes.jl
+        cd ../
