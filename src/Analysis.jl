@@ -15,7 +15,7 @@ using .JETLS: TypeAnnotation as TA
 function type_annotate(code::AbstractString, mod::Module = Main)
     fi = JETLS.FileInfo(1, code, @__FILE__)
     st0_top = JETLS.build_syntax_tree(fi)
-    ctx = build_inferred_context_at(st0_top, mod, 1:1)
+    ctx = TA.build_inferred_context_at(st0_top, mod, 1:1)
     @test ctx !== nothing
     return fi, ctx
 end
