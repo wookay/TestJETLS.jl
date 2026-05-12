@@ -25,9 +25,9 @@ end
 
 check_the_code_block_diff(
     "sources/JETLS/test/analysis/test_TypeAnnotation.jl",
-    :(module test_type_annotation function type_annotate(code::AbstractString, mod::Module = Main) end end),
+    :(module test_type_annotation function type_annotate(code::AbstractString, context_module::Module = type_annotate_module) end end),
     "src/Analysis.jl",
-    :(module Analysis             function type_annotate(code::AbstractString, mod::Module = Main) end end),
+    :(module Analysis             function type_annotate(code::AbstractString, context_module::Module = type_annotate_module) end end),
     skip_lines = (src = [3], dest = [3])
 )
 

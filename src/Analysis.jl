@@ -7,15 +7,18 @@ using JETLS: JETLS
 using .JETLS: JS
 using .JETLS: TypeAnnotation as TA
 
+module type_annotate_module
+end
+
 # Run the full TypeAnnotation pipeline through its exported driver and return
 # `(fi, ctx)` for the toplevel containing byte 1 — i.e. the *first* top-level
 # statement in `code`. The tests below either pass single-toplevel snippets
 # (the common case) or place the statement under test first. `fi` is returned
 # so tests can use `xy_to_offset` etc. against the source.
-function type_annotate(code::AbstractString, mod::Module = Main)
+function type_annotate(code::AbstractString, context_module::Module = type_annotate_module)
     fi = JETLS.FileInfo(1, code, @__FILE__)
     st0_top = JETLS.build_syntax_tree(fi)
-    ctx = TA.build_inferred_context_at(st0_top, mod, 1:1)
+    ctx = TA.build_inferred_context_at(st0_top, context_module, 1:1)
     @test ctx !== nothing
     return fi, ctx
 end
