@@ -32,7 +32,8 @@ check_the_code_block_diff(
 )
 
 for f in [:(function get_lowering_diagnostics(
-                text::AbstractString, code::Union{AbstractString,Nothing} = nothing;
+                text::AbstractString;
+                code::Union{AbstractString,Nothing} = nothing,
                 context_module::Module = lowering_module,
                 world::UInt = Base.get_world_counter(),
                 kwargs...
@@ -41,6 +42,19 @@ for f in [:(function get_lowering_diagnostics(
     check_the_code_block_diff(
         "sources/JETLS/test/test_code_action.jl", :(module test_code_action $f end),
         "src/CodeActions.jl", :(module CodeActions $f end)
+    )
+end # for
+
+for f in [:(function get_lowering_diagnostics(
+                text::AbstractString;
+                code::Union{AbstractString,Nothing} = nothing,
+                context_module::Module = lowering_module,
+                world::UInt = Base.get_world_counter(),
+                kwargs...
+                ) end)]
+    check_the_code_block_diff(
+        "sources/JETLS/test/test_lowering_diagnostic.jl", :(module test_lowering_diagnostics $f end),
+        "src/Diagnostic.jl", :(module Diagnostic $f end)
     )
 end # for
 
