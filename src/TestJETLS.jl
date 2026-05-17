@@ -16,4 +16,7 @@ include("HandleCodeLens.jl")
 # from JETLS/test/test_code_action.jl
 include("CodeActions.jl")
 
+# from JETLS/test/test_lowering_diagnostic.jl
+include("Diagnostic.jl")
+
 end # module TestJETLS
