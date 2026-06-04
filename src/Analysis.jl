@@ -6,6 +6,7 @@ using Test
 using JETLS: JETLS
 using .JETLS: JS
 using .JETLS: TypeAnnotation as TA
+using .TA: build_inferred_context_for_range
 
 module type_annotate_module
 end
@@ -18,7 +19,7 @@ end
 function type_annotate(code::AbstractString, context_module::Module = type_annotate_module)
     fi = JETLS.FileInfo(1, code, @__FILE__)
     st0_top = JETLS.build_syntax_tree(fi)
-    ctx = TA.build_inferred_context_at(st0_top, context_module, 1:1)
+    ctx = build_inferred_context_for_range(st0_top, context_module, 1:1)
     @test ctx !== nothing
     return fi, ctx
 end
