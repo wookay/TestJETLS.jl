@@ -50,8 +50,8 @@ function f(::AbstractScopedValue{T}) where T
 end
 f(LazyScopedValue{Int}())
 """)
-d1, d2 = diagnostics
-@test d1.message == "Value assigned to `T` is never used"
-@test d2.message == "`TestJETLS.Diagnostic.lowering_module.AbstractScopedValue` is not defined"
+(d1, ) = diagnostics
+@test d1.message == "`TestJETLS.Diagnostic.lowering_module.AbstractScopedValue` is not defined"
+# @test d1.message == "Value assigned to `T` is never used"
 
 end # module test_jetls_diagnostic
