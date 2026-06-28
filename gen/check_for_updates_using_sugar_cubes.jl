@@ -24,10 +24,10 @@ function check_the_code_block_diff(src_path::String,
 end
 
 check_the_code_block_diff(
-    "sources/JETLS/test/analysis/test_TypeAnnotation.jl",
-    :(module test_type_annotation function type_annotate(code::AbstractString, context_module::Module = type_annotate_module) end end),
     "src/Analysis.jl",
     :(module Analysis             function type_annotate(code::AbstractString, context_module::Module = type_annotate_module) end end),
+    "sources/JETLS/test/analysis/test_TypeAnnotation.jl",
+    :(module test_type_annotation function type_annotate(code::AbstractString, context_module::Module = type_annotate_module) end end) ;
     skip_lines = (src = [3], dest = [3])
 )
 
@@ -40,8 +40,8 @@ for f in [:(function get_lowering_diagnostics(
                 ) end),
           :(function get_unused_var_code_actions(marked_text::AbstractString; kwargs...) end)]
     check_the_code_block_diff(
-        "sources/JETLS/test/test_code_action.jl", :(module test_code_action $f end),
-        "src/CodeActions.jl", :(module CodeActions $f end)
+        "src/CodeActions.jl", :(module CodeActions $f end),
+        "sources/JETLS/test/test_code_action.jl", :(module test_code_action $f end)
     )
 end # for
 
@@ -53,8 +53,8 @@ for f in [:(function get_lowering_diagnostics(
                 kwargs...
                 ) end)]
     check_the_code_block_diff(
-        "sources/JETLS/test/test_lowering_diagnostic.jl", :(module test_lowering_diagnostics $f end),
-        "src/Diagnostic.jl", :(module Diagnostic $f end)
+        "src/Diagnostic.jl", :(module Diagnostic $f end),
+        "sources/JETLS/test/test_lowering_diagnostic.jl", :(module test_lowering_diagnostics $f end)
     )
 end # for
 
@@ -74,31 +74,31 @@ for f in [:(function get_cursor_bindings(
                 matcher::Regex = r"│", kwargs...
                 ) end)]
     check_the_code_block_diff(
-        "sources/JETLS/test/test_completions.jl", :(module test_completions $f end),
-        "src/Completions.jl", :(module Completions $f end)
+        "src/Completions.jl", :(module Completions $f end),
+        "sources/JETLS/test/test_completions.jl", :(module test_completions $f end)
     )
 end # for
 
 check_the_code_block_diff(
-    "sources/JETLS/test/test_code_lens.jl",
-    :(module test_code_lens function get_code_lenses_with_counts(code::AbstractString) end end),
     "src/HandleCodeLens.jl",
-    :(module HandleCodeLens function get_code_lenses_with_counts(code::AbstractString) end end)
+    :(module HandleCodeLens function get_code_lenses_with_counts(code::AbstractString) end end),
+    "sources/JETLS/test/test_code_lens.jl",
+    :(module test_code_lens function get_code_lenses_with_counts(code::AbstractString) end end)
 )
 
 for ex in [:(macro expect_jl_err(ex) end),
            :(function jldebug(context_module::Module, st0_in::JS.SyntaxTree, stop::Int=5) end),
            :(function jlnode(g::JL.SyntaxGraph, i::JS.NodeId) end)]
     check_the_code_block_diff(
-        "sources/JETLS/test/jsjl-utils.jl", ex,
-        "src/Utils.jl", :(module Utils $ex end)
+        "src/Utils.jl", :(module Utils $ex end),
+        "sources/JETLS/test/jsjl-utils.jl", ex
     )
 end # for
 
 for f in [:(function jlexpand(context_module::Module, code::AbstractString) end),
           :(function jlresolve(context_module::Module, code::AbstractString) end)]
     check_the_code_block_diff(
-        "sources/JETLS/test/utils/test_jl_syntax_macros.jl", f,
-        "src/Utils.jl", :(module Utils $f end)
+        "src/Utils.jl", :(module Utils $f end),
+        "sources/JETLS/test/utils/test_jl_syntax_macros.jl", f
     )
 end # for
