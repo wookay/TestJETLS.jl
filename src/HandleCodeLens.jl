@@ -1,10 +1,10 @@
 module HandleCodeLens # TestJETLS
 
-# from JETLS/test/test_code_lens.jl
-
 using JETLS: JETLS
 using .JETLS: CodeLens, ReferencesCodeLensData, Position
 using .JETLS.URIs2
+
+# from JETLS/test/test_code_lens.jl
 
 function get_code_lenses_with_counts(code::AbstractString)
     server = JETLS.Server()

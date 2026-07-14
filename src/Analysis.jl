@@ -1,12 +1,12 @@
 module Analysis # TestJETLS
 
-# from JETLS/test/analysis/test_TypeAnnotation.jl
-
 using Test
 using JETLS: JETLS
 using .JETLS: JS
 using .JETLS: TypeAnnotation as TA
 using .TA: build_inferred_context_for_range
+
+# from JETLS/test/analysis/test_TypeAnnotation.jl
 
 module type_annotate_module
 end

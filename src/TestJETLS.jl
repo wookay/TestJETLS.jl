@@ -19,4 +19,7 @@ include("CodeActions.jl")
 # from JETLS/test/test_lowering_diagnostic.jl
 include("Diagnostic.jl")
 
+# from JETLS/test/test_hover.jl
+include("Hovers.jl")
+
 end # module TestJETLS

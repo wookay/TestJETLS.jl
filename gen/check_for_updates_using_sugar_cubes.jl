@@ -95,10 +95,17 @@ for ex in [:(macro expect_jl_err(ex) end),
     )
 end # for
 
-for f in [:(function jlexpand(context_module::Module, code::AbstractString) end),
-          :(function jlresolve(context_module::Module, code::AbstractString) end)]
+for f in [:(function get_hover(
+                text::AbstractString, pos::Position;
+                filename::AbstractString = @__FILE__,
+                context_module::Union{Nothing,Module} = nothing) end),
+          :(function hover_test(
+                text::AbstractString, pat::Union{AbstractString, Regex, Nothing};
+                context_module::Union{Nothing,Module} = nothing,
+                notpat::Union{AbstractString, Regex, Nothing} = nothing,
+                broken::Bool = false) end)]
     check_the_code_block_diff(
-        "src/Utils.jl", :(module Utils $f end),
-        "sources/JETLS/test/utils/test_jl_syntax_macros.jl", f
+        "src/Hovers.jl", :(module Hover $f end),
+        "sources/JETLS/test/test_hover.jl", :(module test_hover $f end)
     )
 end # for

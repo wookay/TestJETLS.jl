@@ -2,6 +2,8 @@ module Diagnostic # JETLS
 
 using JETLS: JETLS, JS, LSP, filepath2uri
 
+# from JETLS/test/test_lowering_diagnostic.jl
+
 module lowering_module
 end
 

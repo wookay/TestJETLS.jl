@@ -1,10 +1,10 @@
 module CodeActions # TestJETLS
 
-# from JETLS/test/test_code_action.jl
-
 using JETLS: JETLS
 using .JETLS: LSP, JS, CodeAction, Command
 using .LSP.URIs2
+
+# from JETLS/test/test_code_action.jl
 
 module lowering_module
 end
