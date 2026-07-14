@@ -21,8 +21,7 @@ import Test: @testset
 macro testset(_expr::Expr...)
 end
     """)
-d1 = only(diagnostics)
-@test d1.message == "Unused import `@testset`"
+@test isempty(diagnostics)
 
 
 diagnostics = get_lowering_diagnostics("""
@@ -38,8 +37,7 @@ macro m1(expr::Expr)
     println("expr: ", expr)
 end
     """)
-d1 = only(diagnostics)
-@test d1.message == "Unused import `@m1`"
+@test isempty(diagnostics)
 
 
 diagnostics = get_lowering_diagnostics("""
