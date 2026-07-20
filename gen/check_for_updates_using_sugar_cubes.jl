@@ -61,8 +61,8 @@ end # for
 for f in [:(function get_cursor_bindings(
                 fi::JETLS.FileInfo, b::Int;
                 context_module::Module = lowering_module,
-                soft_scope::Bool = false
-                ) end),
+                soft_scope::Bool = false,
+                world::UInt = Base.get_world_counter()) end),
           :(function get_cursor_bindings(marked_text::AbstractString; kwargs...) end),
           :(function get_local_completions(s::AbstractString, b::Int) end),
           :(function cv_has(cs::Vector{CompletionItem}, expected; kind=nothing) end),
