@@ -87,8 +87,7 @@ check_the_code_block_diff(
 )
 
 for ex in [:(macro expect_jl_err(ex) end),
-           :(function jldebug(context_module::Module, st0_in::JS.SyntaxTree, stop::Int=5) end),
-           :(function jlnode(g::JL.SyntaxGraph, i::JS.NodeId) end)]
+           :(function jldebug(context_module::Module, st0_in::JS.SyntaxTree, stop::Int=5) end)]
     check_the_code_block_diff(
         "src/Utils.jl", :(module Utils $ex end),
         "sources/JETLS/test/jsjl-utils.jl", ex
