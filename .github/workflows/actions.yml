@@ -31,16 +31,18 @@ jobs:
     - name: Install jetls
       shell: bash
       run: |
-        julia --startup-file=no -e '
-          using Pkg
-          Pkg.Apps.develop(; url="https://github.com/aviatesk/JETLS.jl")'
-        echo "$HOME/.julia/bin" >> "$GITHUB_PATH"
+           julia --startup-file=no -e '
+               using Pkg
+               Pkg.develop(url="https://github.com/aviatesk/JETLS.jl")
+               Pkg.develop(path=joinpath(Pkg.devdir(), "JETLS/JETLSCore"))'
+           echo "$HOME/.julia/bin" >> "$GITHUB_PATH"
 
     - uses: julia-actions/julia-buildpkg@v1
 
-    - name: JETLS check
+  # - uses: julia-actions/julia-runtest@v1
+    - name: runtests
       run: |
-        julia -e 'using Pkg; Pkg.add("Jive")'
-        julia --startup-file=no --project=. -m JETLS check test/
-
-    - uses: julia-actions/julia-runtest@v1
+           julia --startup-file=no -e 'using Pkg; Pkg.add("Jive")'
+           cd test/
+           julia --color=yes --startup-file=no --project=.. runtests.jl
+           cd ../
