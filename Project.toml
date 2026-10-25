@@ -5,10 +5,13 @@ authors = ["WooKyoung Noh <wookay.noh@gmail.com>"]
 
 [compat]
 julia = "1.12.2 - 1.13"
+Jive = "0.3"
+TestRunner = "0.1"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 Jive = "ba5e3d4b-8524-549f-bc71-e76ad9e9deed"
+TestRunner = "4efbe77e-ddf3-4ce7-be91-16409ca9e85f"
 
 [targets]
-test = ["Test", "Jive"]
+test = ["Test", "Jive", "TestRunner"]

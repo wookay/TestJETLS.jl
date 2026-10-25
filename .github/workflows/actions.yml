@@ -34,7 +34,8 @@ jobs:
            julia --startup-file=no -e '
                using Pkg
                Pkg.develop(url="https://github.com/aviatesk/JETLS.jl")
-               Pkg.develop(path=joinpath(Pkg.devdir(), "JETLS/JETLSCore"))'
+               Pkg.develop(path=joinpath(Pkg.devdir(), "JETLS/JETLSCore"))
+               Pkg.develop(path=joinpath(Pkg.devdir(), "JETLS/TestRunner"))'
            echo "$HOME/.julia/bin" >> "$GITHUB_PATH"
 
     - uses: julia-actions/julia-buildpkg@v1
@@ -45,4 +46,3 @@ jobs:
            julia --startup-file=no -e 'using Pkg; Pkg.add("Jive")'
            cd test/
            julia --color=yes --startup-file=no --project=.. runtests.jl
-           cd ../
